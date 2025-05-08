@@ -8,6 +8,14 @@ function RegisterVehicle() {
   const [model, setModel] = useState("");
   const [color, setColor] = useState("");
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
+  const clearFields = () => {
+    setPlate("");
+    setOwner("");
+    setModel("");
+    setColor("");
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -15,11 +23,13 @@ function RegisterVehicle() {
     const plateRegex = /^[A-Z]{3}-[0-9][A-Z][0-9]{2}$/;
     if (!plateRegex.test(plate)) {
       setMessage("O formato da placa deve ser AAA-0A00.");
+      setMessageType("error");
       return;
     }
 
     if (!owner || !model || !color) {
       setMessage("Todos os campos são obrigatórios.");
+      setMessageType("error");
       return;
     }
 
@@ -30,6 +40,7 @@ function RegisterVehicle() {
       // A resposta deve conter um booleano 'exists'
       if (checkResponse.data && checkResponse.data.exists) {
         setMessage("Esse veículo já está registrado no estacionamento.");
+        setMessageType("error");
         return;
       }
       
@@ -43,6 +54,8 @@ function RegisterVehicle() {
       });
 
       setMessage(response.data.message);
+      setMessageType("success");
+      clearFields(); // Limpa os campos após o registro bem-sucedido
     } catch (error) {
       // Diferenciar o erro de verificação de veículo do erro de registro
       if (error.response && error.response.status === 404) {
@@ -51,6 +64,7 @@ function RegisterVehicle() {
         console.error("Erro ao registrar veículo:", error);
         setMessage("Erro ao registrar veículo.");
       }
+      setMessageType("error");
     }
   };
 
@@ -71,7 +85,7 @@ function RegisterVehicle() {
 
   return (
     <div className="register-vehicle">
-      <h2>Registrar Veículo</h2>
+      <h2>REGISTRAR VEÍCULO</h2>
       <form onSubmit={handleRegister}>
         <input 
           type="text" 
@@ -103,7 +117,7 @@ function RegisterVehicle() {
         />
         <button type="submit">Registrar</button>
       </form>
-      <p className="message">{message}</p>
+      {message && <p className={`message ${messageType}`}>{message}</p>}
     </div>
   );
 }

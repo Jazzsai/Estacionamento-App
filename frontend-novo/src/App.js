@@ -2,16 +2,17 @@
 import React from "react";
 import RegisterVehicle from "./components/RegisterVehicle";
 import VehicleHistory from "./components/VehicleHistory";
-import ExitVehicle from "./components/ExitVehicle";
 import VehicleStatus from "./components/VehicleStatus";
+import './index.css';
 
 function App() {
   return (
     <div className="container">
-      <h1><center>Estacionamento</center></h1>
-      <RegisterVehicle />
-      <ExitVehicle />
-      <VehicleStatus />
+      <h1>ESTACIONAMENTO</h1>
+      <div className="forms-container">
+        <RegisterVehicle />
+        <VehicleStatus />
+      </div>
       <VehicleHistory />
     </div>
   );
